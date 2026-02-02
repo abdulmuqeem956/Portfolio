@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muqeem Edits | Professional Video Editor</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+    
+    <!-- Light Effects -->
+    <div class="light-effect light-1"></div>
+    <div class="light-effect light-2"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar glass" id="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="ME_logo.jpeg" alt="Muqeem Edits" class="logo-img">
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="cta-btn" onclick="scrollToContact()">
+                Get Started
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <div class="badge-dot"></div>
+                    <span>Professional Video Editor</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="title-line">Clean & Minimal Edits</span>
+                    <span class="title-line">That Command</span>
+                    <span class="title-line gradient-text">Attention</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Professional editing that looks polished without overwhelming your audience. 
+                    Every cut has purpose, every transition adds value—nothing more, nothing less.
+                </p>
+                <div class="hero-cta">
+                    <button class="btn-primary" onclick="scrollToPortfolio()">
+                        View My Work
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M4.16669 10H15.8334M15.8334 10L10 4.16669M15.8334 10L10 15.8334" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <button class="btn-secondary" onclick="scrollToContact()">
+                        Contact for Rates
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">My Work</span>
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">Clean edits that deliver results without the clutter</p>
+            </div>
+
+            <!-- Landscape Video -->
+            <div class="video-showcase-large glass">
+                <div class="video-container" data-video-id="">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="YouTube Video" class="thumbnail-img">
+                        <div class="play-overlay">
+                            <div class="play-button">
+                                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                                    <circle cx="40" cy="40" r="39" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M32 26L54 40L32 54V26Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="video-label">YouTube Video Edit</div>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>Professional YouTube Content</h3>
+                    <p>Clean transitions, strategic pacing, and attention-grabbing visuals that keep viewers engaged from start to finish.</p>
+                    <div class="video-tags">
+                        <span class="tag">YouTube</span>
+                        <span class="tag">Long-form</span>
+                        <span class="tag">Engaging</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portrait Videos Grid -->
+            <div class="video-grid">
+                <div class="video-card glass">
+                    <div class="video-container portrait" data-video-id="">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Instagram Reel" class="thumbnail-img">
+                            <div class="play-overlay">
+                                <div class="play-button small">
+                                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                        <circle cx="30" cy="30" r="29" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M24 18L42 30L24 42V18Z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="video-label">Instagram Reel</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4>Viral Reel Edit</h4>
+                        <p>Hook-driven editing with dynamic pacing perfect for social media.</p>
+                        <div class="video-tags">
+                            <span class="tag">Reels</span>
+                            <span class="tag">Viral</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card glass">
+                    <div class="video-container portrait" data-video-id="">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="YouTube Short" class="thumbnail-img">
+                            <div class="play-overlay">
+                                <div class="play-button small">
+                                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                        <circle cx="30" cy="30" r="29" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M24 18L42 30L24 42V18Z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="video-label">YouTube Short</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4>Engaging Short</h4>
+                        <p>Fast-paced vertical content optimized for maximum retention.</p>
+                        <div class="video-tags">
+                            <span class="tag">Shorts</span>
+                            <span class="tag">Retention</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card glass">
+                    <div class="video-container portrait" data-video-id="">
+                        <div class="video-thumbnail">
+                            <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Social Content" class="thumbnail-img">
+                            <div class="play-overlay">
+                                <div class="play-button small">
+                                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                        <circle cx="30" cy="30" r="29" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M24 18L42 30L24 42V18Z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <div class="video-label">Social Content</div>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4>Story Edit</h4>
+                        <p>Minimal yet impactful edits designed to capture attention quickly.</p>
+                        <div class="video-tags">
+                            <span class="tag">Stories</span>
+                            <span class="tag">Quick</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">What I Offer</span>
+                <h2 class="section-title">Editing Styles</h2>
+                <p class="section-subtitle">Professional editing tailored to your content needs</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card glass">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="6" y="8" width="36" height="24" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M18 40H30M24 32V40" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="20" r="4" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>YouTube Videos</h3>
+                    <p>Long-form content with strategic cuts, smooth transitions, and professional color grading. Perfect pacing to keep your audience engaged throughout.</p>
+                    <ul class="service-features">
+                        <li>Professional color grading</li>
+                        <li>Strategic pacing</li>
+                        <li>Custom graphics</li>
+                        <li>Audio mixing</li>
+                    </ul>
+                </div>
+
+                <div class="service-card glass">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="14" y="6" width="20" height="36" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M24 14L28 20L24 26L20 20L24 14Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>YouTube Shorts</h3>
+                    <p>High-retention vertical edits optimized for the Shorts algorithm. Fast-paced, engaging content that hooks viewers in the first second.</p>
+                    <ul class="service-features">
+                        <li>Hook-first editing</li>
+                        <li>Viral pacing</li>
+                        <li>Trend integration</li>
+                        <li>Retention optimization</li>
+                    </ul>
+                </div>
+
+                <div class="service-card glass">
+                    <div class="service-icon">
+                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                            <rect x="12" y="8" width="24" height="32" rx="2" stroke="currentColor" stroke-width="2"/>
+                            <circle cx="24" cy="24" r="6" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 14H18M30 14H32" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <h3>Instagram Reels</h3>
+                    <p>Attention-grabbing reels with dynamic pacing and trend-aware editing. Clean, minimal style that stands out in the feed.</p>
+                    <ul class="service-features">
+                        <li>Trend-aware editing</li>
+                        <li>Dynamic transitions</li>
+                        <li>Caption optimization</li>
+                        <li>Music sync</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Before/After Section -->
+    <section class="before-after">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Transformation</span>
+                <h2 class="section-title">My Editing Philosophy</h2>
+            </div>
+
+            <div class="comparison-container glass">
+                <div class="comparison-side">
+                    <div class="comparison-label before-label">What I Avoid</div>
+                    <ul class="comparison-list">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="#ff4444" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Over-editing that feels chaotic
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="#ff4444" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Unnecessary effects and transitions
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="#ff4444" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Distracting motion graphics
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="#ff4444" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Generic, template-based editing
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="#ff4444" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                            Viewer fatigue and boredom
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="comparison-divider"></div>
+
+                <div class="comparison-side">
+                    <div class="comparison-label after-label">What I Deliver</div>
+                    <ul class="comparison-list after">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10L8 14L16 6" stroke="var(--primary-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Clean, purposeful cuts
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10L8 14L16 6" stroke="var(--primary-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Strategic, minimal transitions
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10L8 14L16 6" stroke="var(--primary-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Attention-commanding visuals
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10L8 14L16 6" stroke="var(--primary-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Custom, branded content
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M4 10L8 14L16 6" stroke="var(--primary-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Professional, engaging results
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image glass">
+                    <div class="image-placeholder">
+                        <img src="My_Photo.png" alt="Abdul Muqeem">
+                    </div>
+                </div>
+                <div class="about-text">
+                    <span class="section-label">About Me</span>
+                    <h2 class="section-title">Muqeem Edits</h2>
+                    <p class="about-description">
+                        I specialize in creating clean, minimal edits that look professional and command attention without overwhelming your audience. My philosophy is simple: every cut should have a purpose, every transition should add value.
+                    </p>
+                    <p class="about-description">
+                        With years of experience editing for YouTube, Instagram, and various social platforms, I understand what it takes to keep viewers engaged. I don't believe in over-editing—instead, I focus on strategic choices that enhance your content without causing viewer fatigue.
+                    </p>
+                    <div class="about-skills">
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <span>Adobe Premiere Pro</span>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <span>After Effects</span>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <span>DaVinci Resolve</span>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-icon">✓</div>
+                            <span>Color Grading</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-label">Get In Touch</span>
+                <h2 class="section-title">Let's Work Together</h2>
+                <p class="section-subtitle">Ready to elevate your content? Reach out for rates and availability</p>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info glass">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M4 4H20C21.1 4 22 4.9 22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6C2 4.9 2.9 4 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M22 6L12 13L2 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="contact-label">Email</div>
+                            <a href="/cdn-cgi/l/email-protection#e38e969286868ecd86878a9790a3848e828a8fcd808c8e" class="contact-value"><span class="__cf_email__" data-cfemail="1c71696d79797132797875686f5c7b717d7570327f7371">[email&#160;protected]</span></a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/>
+                                <circle cx="18" cy="6" r="1" fill="currentColor"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="contact-label">Instagram</div>
+                            <a href="https://www.instagram.com/muqeem.edits?igsh=M2gyMXFsY3Ywdnlq" target="_blank" class="contact-value">@muqeem.edits</a>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="/cdn-cgi/l/email-protection#650810140000084b00010c1116250208040c094b060a08" class="social-btn glass">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M3 3H17C18 3 19 4 19 5V15C19 16 18 17 17 17H3C2 17 1 16 1 15V5C1 4 2 3 3 3Z" stroke="currentColor" stroke-width="1.5"/>
+                                <path d="M19 5L10 11L1 5" stroke="currentColor" stroke-width="1.5"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.instagram.com/muqeem.edits?igsh=M2gyMXFsY3Ywdnlq" target="_blank" class="social-btn glass">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <rect x="1" y="1" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="10" cy="10" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+                                <circle cx="15.5" cy="4.5" r="1" fill="currentColor"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-form glass">
+                    <h3>Send a Message</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="your@email.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell me about your project..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary full-width">
+                            Send Message
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M18 2L9 11M18 2L12 18L9 11M18 2L2 8L9 11" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass">
+            <button class="modal-close" id="modalClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <div class="modal-video-container">
+                <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo-text">Muqeem Edits</div>
+                    <p>Professional video editing that commands attention without the clutter.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul>
+                            <li><a href="#portfolio">Portfolio</a></li>
+                            <li><a href="#services">Services</a></li>
+                            <li><a href="#about">About</a></li>
+                            <li><a href="#contact">Contact</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Services</h4>
+                        <ul>
+                            <li>YouTube Videos</li>
+                            <li>YouTube Shorts</li>
+                            <li>Instagram Reels</li>
+                            <li>Custom Editing</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Muqeem Edits. All rights reserved.</p>
+                <div class="footer-social">
+                    <a href="/cdn-cgi/l/email-protection#d9b4aca8bcbcb4f7bcbdb0adaa99beb4b8b0b5f7bab6b4">Email</a>
+                    <a href="https://www
