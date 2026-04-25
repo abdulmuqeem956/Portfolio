@@ -1802,40 +1802,55 @@ a, .btn-primary, .btn-secondary, .service-card, .portfolio-item img {
 .footer-brand .selection-text { transform: translateY(-1px); }
 
 /* ============================================================
-   MOBILE PERFORMANCE FIXES
-   This stops the lagging on phones by pausing heavy animations
+   ULTIMATE MOBILE PERFORMANCE FIX (AGGRESSIVE)
+   Turns off heavy GPU calculations for phones
 ============================================================ */
 
 @media (max-width: 768px) {
-  /* 1. Stop the heavy background noise animation */
-  .hero-grain {
-    animation: none !important;
-    opacity: 0.15 !important;
+  /* 1. KILL GIANT BLURRED BEAMS (Number 1 GPU killer) */
+  .glow-wrap {
+    display: none !important;
   }
 
-  /* 2. Stop the giant glowing orbs from pulsing and reduce their blur */
-  .glow-beam, .glow-orb--mid {
-    animation: none !important;
-    filter: blur(60px) !important;
-  }
-
-  /* 3. Reduce the heavy frosted glass effect */
-  .service-card, #mobile-menu, #navbar.scrolled {
-    backdrop-filter: blur(10px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
-  }
-
-  /* 4. Stop the swinging bulb and flickering lamp */
-  .hanging-bulb-wrap {
-    animation: none !important;
-    transform: translateX(-50%) rotate(0deg) !important;
-  }
-  .detective-lamp {
+  /* 2. KILL ALL SVG NOISE & GRAIN (Number 2 GPU killer) */
+  .hero-grain,
+  .service-card.news-clipping::before,
+  .portfolio-item::after {
+    display: none !important;
+    background: none !important;
     animation: none !important;
   }
 
-  /* 5. Stop the 3D papers from flapping */
+  /* 3. KILL FROSTED GLASS (Backdrop-filter causes massive scroll lag) 
+        We replace it with a solid, sleek dark color instead. */
+  .service-card,
+  #mobile-menu,
+  #navbar.scrolled,
+  .play-btn {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background: rgba(12, 12, 12, 0.98) !important;
+    box-shadow: none !important;
+  }
+
+  /* 4. KILL BLEND MODES (Color-dodge forces constant pixel recalculation) */
+  .detective-lamp,
+  .workspace-light {
+    mix-blend-mode: normal !important;
+    opacity: 0.1 !important; 
+    animation: none !important;
+  }
+
+  /* 5. STOP ALL PHYSICS, SWINGING, AND FLAPPING ANIMATIONS */
+  .hanging-bulb-wrap,
+  .bulb-glass,
   .paper-1, .paper-2, .paper-3, .paper-4, .paper-5 {
     animation: none !important;
+    transform: none !important;
+  }
+
+  /* 6. REMOVE HEAVY 3D DROP-SHADOWS FROM PINS */
+  .service-card::after {
+    filter: none !important;
   }
 }
