@@ -1854,3 +1854,25 @@ a, .btn-primary, .btn-secondary, .service-card, .portfolio-item img {
     filter: none !important;
   }
 }
+
+/* ============================================================
+   HOME PAGE FIXES: PERFECT CENTERING & REMOVING LAGGY BULB
+============================================================ */
+
+/* 1. Fix the invisible box pushing the text to the right side */
+#hero {
+  flex-direction: column !important;
+}
+
+/* 2. Shrink the massive title slightly on phones so it fits perfectly */
+@media (max-width: 450px) {
+  .hero-title {
+    font-size: 2.6rem !important;
+  }
+}
+
+/* 3. Completely remove the swinging bulb to stop the phone lag */
+.hanging-bulb-wrap {
+  display: none !important;
+  animation: none !important;
+}
