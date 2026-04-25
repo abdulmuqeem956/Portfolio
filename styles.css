@@ -1800,3 +1800,42 @@ a, .btn-primary, .btn-secondary, .service-card, .portfolio-item img {
 .footer-brand .selection-bg::before { inset: -2px; background-size: 3px 3px; }
 .footer-brand .selection-cursor { width: 16px; height: 16px; margin-top: -2px; margin-left: -4px; }
 .footer-brand .selection-text { transform: translateY(-1px); }
+
+/* ============================================================
+   MOBILE PERFORMANCE FIXES
+   This stops the lagging on phones by pausing heavy animations
+============================================================ */
+
+@media (max-width: 768px) {
+  /* 1. Stop the heavy background noise animation */
+  .hero-grain {
+    animation: none !important;
+    opacity: 0.15 !important;
+  }
+
+  /* 2. Stop the giant glowing orbs from pulsing and reduce their blur */
+  .glow-beam, .glow-orb--mid {
+    animation: none !important;
+    filter: blur(60px) !important;
+  }
+
+  /* 3. Reduce the heavy frosted glass effect */
+  .service-card, #mobile-menu, #navbar.scrolled {
+    backdrop-filter: blur(10px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(120%) !important;
+  }
+
+  /* 4. Stop the swinging bulb and flickering lamp */
+  .hanging-bulb-wrap {
+    animation: none !important;
+    transform: translateX(-50%) rotate(0deg) !important;
+  }
+  .detective-lamp {
+    animation: none !important;
+  }
+
+  /* 5. Stop the 3D papers from flapping */
+  .paper-1, .paper-2, .paper-3, .paper-4, .paper-5 {
+    animation: none !important;
+  }
+}
