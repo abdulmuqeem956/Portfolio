@@ -1,0 +1,1802 @@
+/* ============================================================
+   AFTER CUTS STUDIO — styles.css
+   Theme : Dark Luxury / Cinematic / Minimal
+   Colors: #000000 Black · #CA0013 Red · #FAFAFA Off-white
+   Fonts : ClashDisplay Semibold (hero/display) · DM Sans (body)
+   NOTE  : Cursor animation fully removed as requested
+============================================================ */
+
+/* ─── CUSTOM FONT ───────────────────────────────────────────── */
+@font-face {
+  font-family: 'ClashDisplay';
+  src: url('ClashDisplay-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── RESET ─────────────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+/* ─── VARIABLES ─────────────────────────────────────────────── */
+:root {
+  --black:        #000000;
+  --red:          #CA0013;
+  --red-glow:     rgba(202, 0, 19, 0.45);
+  --red-soft:     rgba(202, 0, 19, 0.18);
+  --red-dim:      rgba(202, 0, 19, 0.10);
+  --white:        #FAFAFA;
+  --white-60:     rgba(250,250,250,0.60);
+  --white-30:     rgba(250,250,250,0.30);
+  --white-08:     rgba(250,250,250,0.08);
+  --border:       rgba(255,255,255,0.08);
+  --card-bg:      rgba(12, 12, 12, 0.80);
+  --font-display: 'ClashDisplay', sans-serif;
+  --font-body:    'DM Sans', sans-serif;
+  --ease:         cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-snap:    cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── BASE ──────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  /* True page black lives on html so body can be transparent */
+  background: var(--black);
+}
+
+body {
+  /* MUST be transparent so fixed glow layer shows through */
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  cursor: auto; /* normal cursor — animation removed */
+}
+
+img { display:block; width:100%; height:100%; object-fit:cover; }
+a   { text-decoration:none; color:inherit; }
+ul  { list-style:none; }
+
+.container {
+  width: min(1200px, 90%);
+  margin-inline: auto;
+}
+
+/* ─── UTILITY ───────────────────────────────────────────────── */
+.red { color: var(--red); }  /* used on "Cuts" in hero title */
+
+/* ============================================================
+   GLOW LAYER
+   Mimics ultimateeditors.com style:
+   - Two large cone/beam shapes from upper-left & upper-right
+   - One soft central orb lower down
+   - All fixed so they persist while scrolling
+   - z-index: -1 so they sit BEHIND every section
+============================================================ */
+.glow-wrap {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;          /* behind the entire page */
+  overflow: hidden;
+}
+
+/* ── Shared beam base ── */
+.glow-beam {
+  position: absolute;
+  top: -10%;
+  width: 60vw;
+  height: 110vh;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.55;
+  transform-origin: top center;
+}
+
+/* Left beam — angled in from upper-left */
+.glow-beam--left {
+  left: -15%;
+  background: radial-gradient(
+    ellipse 60% 80% at 40% 10%,
+    rgba(202, 0, 19, 0.70) 0%,
+    rgba(202, 0, 19, 0.25) 40%,
+    transparent 75%
+  );
+  transform: rotate(-18deg);
+  animation: beamPulse 9s ease-in-out infinite alternate;
+}
+
+/* Right beam — mirrored from upper-right */
+.glow-beam--right {
+  right: -15%;
+  background: radial-gradient(
+    ellipse 60% 80% at 60% 10%,
+    rgba(202, 0, 19, 0.55) 0%,
+    rgba(202, 0, 19, 0.18) 40%,
+    transparent 75%
+  );
+  transform: rotate(18deg);
+  animation: beamPulse 12s ease-in-out infinite alternate-reverse;
+}
+
+/* Central soft orb — sits in the lower-middle for depth */
+.glow-orb--mid {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(700px, 80vw);
+  height: min(400px, 50vw);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(202, 0, 19, 0.28) 0%,
+    rgba(202, 0, 19, 0.08) 50%,
+    transparent 75%
+  );
+  filter: blur(90px);
+  opacity: 0.7;
+  animation: beamPulse 15s ease-in-out infinite alternate;
+}
+
+@keyframes beamPulse {
+  0%   { opacity: 0.45; }
+  50%  { opacity: 0.65; }
+  100% { opacity: 0.50; }
+}
+
+/* Accessibility: kill animation for reduced-motion users */
+@media (prefers-reduced-motion: reduce) {
+  .glow-beam, .glow-orb--mid { animation: none; }
+}
+
+/* ─── PAGE LOADER ───────────────────────────────────────────── */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.7s var(--ease), visibility 0.7s;
+}
+#loader.hidden { opacity:0; visibility:hidden; }
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.loader-brand {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.loader-line {
+  width: 0;
+  height: 1px;
+  background: var(--red);
+  animation: lineGrow 1.5s var(--ease-snap) forwards;
+}
+@keyframes lineGrow { to { width: 120px; } }
+
+/* ─── NAVBAR ────────────────────────────────────────────────── */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px min(5%, 72px);
+  transition: background 0.5s var(--ease), padding 0.4s var(--ease);
+}
+
+#navbar.scrolled {
+  background: rgba(0,0,0,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Logo placeholder ─────────────────────────── */
+/* When you're ready to use your PNG:
+   Remove .logo-placeholder and just put <img src="logo.png"> */
+.nav-logo { display: inline-flex; align-items: center; }
+
+.logo-placeholder {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-box-wrap {
+  /* This box holds the AC initials — delete when using real logo */
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.logo-box {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--red);
+  line-height: 1;
+}
+
+/* To use an actual PNG logo instead, apply this class: */
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+
+.logo-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  transition: color 0.3s;
+}
+.nav-logo:hover .logo-name { color: var(--red); }
+
+/* ── Nav links ─────────────────────────────────── */
+.nav-links { display:flex; gap:36px; }
+
+.nav-links a {
+  font-size: 0.76rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white-60);
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px; left: 0;
+  width: 0; height: 1px;
+  background: var(--red);
+  transition: width 0.35s var(--ease-snap);
+}
+.nav-links a:hover { color: var(--white); }
+.nav-links a:hover::after { width: 100%; }
+
+/* ── Mobile toggle ─────────────────────────────── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.nav-toggle span {
+  display: block;
+  width: 24px; height: 1px;
+  background: var(--white);
+  transition: transform 0.35s var(--ease-snap), opacity 0.25s;
+}
+.nav-toggle.open span:first-child { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:last-child  { transform: translateY(-7px) rotate(-45deg); }
+
+/* ─── MOBILE MENU ───────────────────────────────────────────── */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  z-index: 850;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.6s var(--ease-snap);
+}
+#mobile-menu.open { clip-path: inset(0 0 0% 0); }
+
+#mobile-menu ul { display:flex; flex-direction:column; align-items:center; gap:36px; }
+
+#mobile-menu a {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  font-weight: 300;
+  color: var(--white-60);
+  transition: color 0.3s;
+}
+#mobile-menu a:hover { color: var(--red); }
+
+/* ─── SCROLL REVEAL ─────────────────────────────────────────── */
+.reveal-up, .reveal-left, .reveal-right {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s var(--ease-snap), transform 0.9s var(--ease-snap);
+}
+.reveal-left  { transform: translateX(-50px); }
+.reveal-right { transform: translateX(50px); }
+
+.reveal-up.visible,
+.reveal-left.visible,
+.reveal-right.visible {
+  opacity: 1;
+  transform: translate(0);
+}
+
+.delay-1 { transition-delay: 0.15s; }
+.delay-2 { transition-delay: 0.30s; }
+.delay-3 { transition-delay: 0.45s; }
+
+/* ─── BUTTONS ───────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 44px;
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid var(--red);
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s var(--ease-snap);
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--white);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-snap);
+  z-index: -1; /* This pushes the white background BEHIND the text */
+}
+.btn-primary:hover { color: var(--red) !important; }
+.btn-primary:hover::before { transform: scaleX(1); }
+.btn-primary > * { position: relative; z-index: 1; }
+.btn-primary > *:not(::before) { position: relative; z-index: 1; }
+
+/* Fix: all direct text content above ::before */
+.btn-primary { isolation: isolate; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 36px;
+  background: transparent;
+  color: var(--white);
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  transition: border-color 0.35s, background 0.35s;
+}
+.btn-secondary:hover { border-color: var(--red); background: var(--red-dim); }
+
+/* ─── SECTION SHARED ────────────────────────────────────────── */
+.section-label {
+  display: block;
+  font-size: 0.70rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.section-title em { font-style: italic; color: var(--white-60); }
+.section-header { margin-bottom: 60px; }
+
+/* ─── HERO ──────────────────────────────────────────────────── */
+#hero {
+  position: relative;
+  height: 100svh;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  /* no background — glow layer shows through */
+}
+
+/* Subtle film grain */
+.hero-grain {
+  position: absolute;
+  inset: -50%;
+  width: 200%; height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.3;
+  animation: grainShift 0.15s steps(1) infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes grainShift {
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-5%,-8%); }
+  50%  { transform: translate(8%,3%); }
+  75%  { transform: translate(-3%,10%); }
+  100% { transform: translate(5%,-5%); }
+}
+
+/* Edge darkening vignette */
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%,
+    transparent 40%, rgba(0,0,0,0.75) 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding-inline: 24px;
+}
+
+.hero-eyebrow {
+  font-size: 0.70rem;
+  font-weight: 500;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3.2rem, 11vw, 9rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--white);
+}
+
+/* "Cuts" red word — handled by .red utility class in HTML */
+.hero-title .red {
+  color: var(--red);
+  font-style: normal;
+}
+
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--white-60);
+  display: block;
+}
+
+.hero-tagline {
+  font-size: clamp(0.85rem, 1.8vw, 1.05rem);
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--white-60);
+  max-width: 480px;
+}
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+}
+.hero-scroll-hint span {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white-30);
+}
+.scroll-line {
+  width: 1px; height: 50px;
+  background: linear-gradient(to bottom, var(--white-30), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ─── SERVICES ──────────────────────────────────────────────── */
+#services {
+  padding: 120px 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+
+.service-card {
+  position: relative;
+  padding: 56px 52px;
+  background: var(--card-bg);          /* semi-transparent — glow bleeds through */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.4s var(--ease);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(202,0,19,0.08) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.service-card:hover { border-color: rgba(202,0,19,0.35); }
+.service-card:hover::before { opacity: 1; }
+
+.service-num {
+  position: absolute;
+  top: 36px; right: 40px;
+  font-family: var(--font-display);
+  font-size: 5rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+  user-select: none;
+  transition: color 0.4s;
+}
+.service-card:hover .service-num { color: rgba(202,0,19,0.10); }
+
+.service-icon {
+  width: 48px; height: 48px;
+  color: var(--red);
+  margin-bottom: 28px;
+  transition: transform 0.4s var(--ease-snap);
+}
+.service-card:hover .service-icon { transform: scale(1.1); }
+
+.service-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  margin-bottom: 16px;
+}
+
+.service-desc {
+  font-size: 0.9rem;
+  color: var(--white-60);
+  line-height: 1.8;
+  margin-bottom: 28px;
+}
+
+.service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.service-tags span {
+  padding: 4px 14px;
+  border: 1px solid var(--border);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white-60);
+  transition: border-color 0.3s, color 0.3s;
+}
+.service-card:hover .service-tags span {
+  border-color: rgba(202,0,19,0.3);
+  color: var(--white);
+}
+
+/* ─── PORTFOLIO ─────────────────────────────────────────────── */
+#portfolio {
+  padding: 120px 0;
+  background: rgba(6,6,6,0.70);   /* semi-transparent */
+  border-top: 1px solid var(--border);
+}
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.portfolio-item {
+  position: relative;
+  aspect-ratio: 9/11;
+  overflow: hidden;
+}
+
+.portfolio-thumb { position: absolute; inset: 0; }
+
+.portfolio-thumb img {
+  transition: transform 0.7s var(--ease), filter 0.5s var(--ease);
+  filter: grayscale(20%) brightness(0.85);
+}
+.portfolio-item:hover .portfolio-thumb img {
+  transform: scale(1.08);
+  filter: grayscale(0%) brightness(0.55);
+}
+
+.portfolio-overlay {
+  position: absolute; inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+}
+.portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+.play-btn {
+  width: 60px; height: 60px;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  margin-bottom: auto;
+  margin-top: auto;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+.play-btn svg { width:18px; height:18px; margin-left:3px; }
+.portfolio-item:hover .play-btn {
+  border-color: var(--red);
+  background: var(--red);
+  transform: scale(1.1);
+}
+
+.portfolio-info {
+  position: absolute;
+  bottom: 28px; left: 28px; right: 28px;
+}
+.portfolio-cat {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+.portfolio-name {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.portfolio-link { position: absolute; inset: 0; z-index: 5; }
+
+/* ─── LIGHTBOX ──────────────────────────────────────────────── */
+#video-lightbox {
+  position: fixed; inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0.4s;
+}
+#video-lightbox.open { opacity: 1; visibility: visible; }
+
+.lightbox-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.93);
+}
+.lightbox-inner {
+  position: relative;
+  z-index: 1;
+  width: min(900px, 92vw);
+}
+.lightbox-close {
+  position: absolute;
+  top: -44px; right: 0;
+  background: none;
+  border: none;
+  color: var(--white-60);
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.3s;
+}
+.lightbox-close:hover { color: var(--red); }
+.lightbox-frame { position: relative; padding-bottom: 56.25%; height: 0; }
+.lightbox-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ─── ABOUT ─────────────────────────────────────────────────── */
+#about {
+  padding: 140px 0;
+  border-top: 1px solid var(--border);
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+
+.about-visual { display:flex; flex-direction:column; gap:32px; }
+
+.about-img-wrap {
+  position: relative;
+  aspect-ratio: 4/5;
+  max-width: 420px;
+}
+
+.about-img-placeholder {
+  width: 100%; height: 100%;
+  background: rgba(20,20,20,0.80);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 4rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.1);
+  /* REPLACE: remove this div and use <img src="your-photo.jpg"> */
+}
+
+.about-img-border {
+  position: absolute;
+  bottom: -16px; right: -16px;
+  width: 60%; height: 60%;
+  border: 1px solid var(--red);
+  z-index: -1;
+  transition: transform 0.4s var(--ease);
+}
+.about-img-wrap:hover .about-img-border { transform: translate(-6px,-6px); }
+
+.about-stat-block { display:flex; gap:48px; }
+.about-stat { display:flex; flex-direction:column; gap:4px; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.8rem;
+  font-weight: 300;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--white-30);
+}
+
+.about-text { display:flex; flex-direction:column; gap:20px; }
+.about-text p { font-size: 0.9rem; color: var(--white-60); line-height: 1.9; }
+.about-text .btn-secondary { margin-top: 16px; }
+
+/* ─── INSTAGRAM ─────────────────────────────────────────────── */
+#instagram {
+  padding: 120px 0;
+  background: rgba(8,8,8,0.72);
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.ig-inner { display:flex; flex-direction:column; align-items:center; gap:24px; }
+.ig-icon { width:52px; height:52px; color: var(--red); }
+.ig-sub {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--white-30);
+}
+.ig-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  font-weight: 600;
+  line-height: 1.05;
+}
+.btn-ig {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 44px;
+  border: 1px solid var(--border);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--white-60);
+  transition: border-color 0.35s, color 0.35s, background 0.35s;
+  margin-top: 8px;
+}
+.btn-ig:hover {
+  border-color: var(--red);
+  color: var(--white);
+  background: var(--red-dim);
+}
+.btn-ig-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.3s var(--ease-snap);
+}
+.btn-ig:hover .btn-ig-arrow { transform: translate(3px,-3px); }
+
+/* ─── CONTACT ───────────────────────────────────────────────── */
+#contact {
+  padding: 160px 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Extra glow specifically behind the contact section CTA */
+.contact-glow {
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(900px, 120vw);
+  height: 600px;
+  background: radial-gradient(
+    circle at center,
+    rgba(202, 0, 19, 0.22) 0%,
+    rgba(202, 0, 19, 0.06) 50%,
+    transparent 75%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.contact-layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 56px;
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-top: 12px;
+}
+.contact-title em { font-style: italic; color: var(--red); }
+
+.contact-sub {
+  font-size: 0.95rem;
+  color: var(--white-60);
+  max-width: 440px;
+  margin: 16px auto 0;
+  line-height: 1.8;
+}
+
+.contact-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 44px;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid;
+  transition: background 0.35s, color 0.35s, border-color 0.35s, transform 0.3s var(--ease-snap);
+}
+.contact-btn svg { width:20px; height:20px; flex-shrink:0; }
+.contact-btn:hover { transform: translateY(-2px); }
+
+.whatsapp-btn {
+  background: var(--red);
+  border-color: var(--red);
+  color: var(--white);
+}
+.whatsapp-btn:hover { background: transparent; color: var(--red); }
+
+.instagram-btn {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--white-60);
+}
+.instagram-btn:hover {
+  border-color: var(--white-30);
+  color: var(--white);
+  background: var(--white-08);
+}
+
+/* ─── FOOTER ────────────────────────────────────────────────── */
+#footer {
+  padding: 40px 0;
+  border-top: 1px solid var(--border);
+  background: rgba(0,0,0,0.60);
+}
+
+.footer-layout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+}
+.footer-copy { font-size: 0.72rem; color: var(--white-30); letter-spacing: 0.06em; }
+.footer-links { display:flex; gap:28px; }
+.footer-links a {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white-30);
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--red); }
+
+/* ─── DETECTIVE BOARD BACKGROUND ─── */
+.detective-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* Sits behind the text (z-index: 2) */
+  pointer-events: none;
+  opacity: 0.18; /* Keeps it subtle and cinematic in the dark */
+  overflow: hidden;
+  perspective: 800px; /* Required to make the 3D wind flap look realistic */
+}
+
+/* The red strings connecting everything */
+.detective-threads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+}
+
+/* Base paper styling */
+.paper {
+  position: absolute;
+  width: 50px;
+  height: 65px;
+  background: #E8E8E8;
+  border-radius: 1px;
+  box-shadow: 2px 8px 15px rgba(0,0,0,0.8);
+  /* The anchor point for the animation is the top middle (where the pin is) */
+  transform-origin: top center; 
+}
+
+/* The Red Push-Pins */
+.pin {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  background: var(--red);
+  border-radius: 50%;
+  box-shadow: 1px 2px 4px rgba(0,0,0,0.6);
+  z-index: 2;
+}
+
+/* Positioning the papers exactly where the strings connect */
+.paper-1 { top: 25%; left: 15%; --base-rot: -6deg; animation: paperFlap 4s ease-in-out infinite; }
+.paper-2 { top: 65%; left: 75%; --base-rot: 8deg;  animation: paperFlap 5s ease-in-out infinite 1s; width: 60px; height: 50px;} /* Landscape photo */
+.paper-3 { top: 80%; left: 35%; --base-rot: -2deg; animation: paperFlap 3.5s ease-in-out infinite 0.5s; }
+.paper-4 { top: 15%; left: 65%; --base-rot: 12deg; animation: paperFlap 4.5s ease-in-out infinite 1.5s; }
+.paper-5 { top: 35%; left: 85%; --base-rot: -9deg; animation: paperFlap 5.5s ease-in-out infinite 0.2s; height: 40px;} /* Sticky note size */
+
+/* Faint details on the papers to make them look real */
+.paper-content {
+  position: absolute;
+  inset: 12px 6px 6px 6px;
+  opacity: 0.3;
+}
+.line-block { border-top: 2px solid #000; border-bottom: 2px solid #000; height: 10px; margin-top: 10px; }
+.photo-block { background: #333; width: 100%; height: 100%; }
+.text-block { background: repeating-linear-gradient(to bottom, #000, #000 1px, transparent 1px, transparent 4px); }
+
+/* The Wind Physics Animation */
+@keyframes paperFlap {
+  0%, 100% { 
+    transform: translate(-50%, 0) rotate(var(--base-rot)) rotateX(0deg); 
+  }
+  50% { 
+    /* The rotateX(25deg) lifts the bottom of the paper up toward the screen */
+    transform: translate(-50%, 0) rotate(calc(var(--base-rot) + 2deg)) rotateX(25deg); 
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 660px) {
+  .detective-bg { opacity: 0.12; } /* Even darker on mobile to protect readability */
+  .paper { transform: scale(0.7); } /* Shrinks the papers slightly */
+}
+
+
+/* ─── RESPONSIVE ────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .services-grid  { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr 1fr; }
+  .about-layout   { grid-template-columns: 1fr; gap: 60px; }
+  .about-img-wrap { max-width: 100%; aspect-ratio: 3/2; }
+  .footer-layout  { flex-direction: column; text-align: center; }
+}
+
+@media (max-width: 660px) {
+  .nav-links  { display: none; }
+  .nav-toggle { display: flex; }
+  .portfolio-grid  { grid-template-columns: 1fr; }
+  .portfolio-item  { aspect-ratio: 16/9; }
+  .service-card    { padding: 40px 28px; }
+  .contact-buttons { flex-direction: column; align-items: center; }
+  .contact-btn     { width: 100%; max-width: 320px; justify-content: center; }
+  #contact   { padding: 100px 0; }
+  #services  { padding: 80px 0; }
+  #portfolio { padding: 80px 0; }
+  #about     { padding: 80px 0; }
+  #instagram { padding: 80px 0; }
+  .section-header { margin-bottom: 40px; }
+  /* Scale down beams on mobile so they aren't overwhelming */
+  .glow-beam { filter: blur(80px); opacity: 0.40; }
+}
+
+@media (max-width: 400px) {
+  .hero-title { font-size: 3.2rem; }
+  .logo-name  { display: none; } /* show only box on very small screens */
+}
+
+/* ─── ANIMATED SELECTION EFFECT ─── */
+.selection-wrapper {
+  position: relative;
+  display: inline-block;
+  padding: 0px 14px;
+  margin: 0 4px;
+  line-height: 1.1;
+}
+
+/* 1. Text Animation: Starts White, Turns Red */
+.selection-text {
+  position: relative;
+  z-index: 2;
+  color: var(--white); /* Initial color */
+  font-style: normal;
+  display: inline-block;
+  transform: translateY(-4px); 
+  animation: textTurnRed 0.8s ease 1s forwards; /* Triggers at 1 second */
+}
+
+@keyframes textTurnRed {
+  0% { color: var(--white); }
+  100% { color: var(--red); }
+}
+
+/* 2. Box Animation: Draws from top-left to bottom-right */
+.selection-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--white);
+  border: 2px dashed var(--black);
+  z-index: 1; /* Sits behind the text */
+  clip-path: inset(0 100% 100% 0); /* Shrinks the box to a hidden dot at top-left */
+  animation: drawBox 1s ease 2s forwards; /* Starts drawing exactly at 2 seconds */
+}
+
+/* The tiny black tracker squares in the corners */
+.selection-bg::before {
+  content: '';
+  position: absolute;
+  inset: -3px; /* Pushes the squares slightly over the border */
+  background:
+    linear-gradient(var(--black), var(--black)) top left,
+    linear-gradient(var(--black), var(--black)) top right,
+    linear-gradient(var(--black), var(--black)) bottom left,
+    linear-gradient(var(--black), var(--black)) bottom right;
+  background-size: 6px 6px;
+  background-repeat: no-repeat;
+  pointer-events: none; 
+}
+
+@keyframes drawBox {
+  0% { clip-path: inset(0 100% 100% 0); }
+  100% { clip-path: inset(0 0 0 0); } /* Expands to full size */
+}
+
+/* 3. Cursor Animation: Wait, Click, Drag, Float */
+.selection-cursor {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  z-index: 10;
+  top: 0; 
+  left: 0;
+  margin-top: -8px; 
+  margin-left: -8px; /* Offsets so the tip points exactly at the corner */
+  opacity: 0;
+  filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.6));
+  
+  /* Runs the intro once, then chains into an infinite floating animation */
+  animation: 
+    cursorIntro 3s ease forwards,
+    cursorFloat 3s ease-in-out 3s infinite;
+}
+
+@keyframes cursorIntro {
+  0%, 60% { opacity: 0; top: 0%; left: 0%; transform: scale(1.4); } /* Wait off-screen (0s to 1.8s) */
+  66.66% { opacity: 1; top: 0%; left: 0%; transform: scale(1); } /* Snap in/Click! (2.0s) */
+  100% { opacity: 1; top: 100%; left: 100%; transform: scale(1); } /* Drag to bottom-right (3.0s) */
+}
+
+@keyframes cursorFloat {
+  0%, 100% { opacity: 1; top: 100%; left: 100%; transform: translate(0, 0); }
+  50% { opacity: 1; top: 100%; left: 100%; transform: translate(4px, 4px); }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 660px) {
+  .selection-wrapper { padding: 0px 8px; }
+  .selection-bg { border-width: 1.5px; }
+  .selection-cursor { width: 35px; height: 35px; }
+}
+/* ─── APPLE STYLE FROSTED GLASS ─── */
+.service-card, #mobile-menu {
+  background: rgba(20, 20, 20, 0.4) !important; /* Very transparent dark base */
+  backdrop-filter: blur(24px) saturate(180%) !important; /* The magic frosted glass */
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important; /* For Safari/iPhones */
+  border: 1px solid rgba(255, 255, 255, 0.08) !important; /* Ultra-thin, faint border */
+  border-radius: 24px !important; /* Apple loves smooth, generous rounded corners */
+}
+
+/* Make the navbar extra glassy when you scroll */
+#navbar.scrolled {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+/* ─── APPLE SMOOTH ANIMATION CURVE ─── */
+:root {
+  /* This is the exact easing curve Apple uses for smooth UI */
+  --apple-ease: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Make buttons, cards, and links use this smooth glide */
+a, .btn-primary, .btn-secondary, .service-card, .portfolio-item img {
+  transition: all 0.6s var(--apple-ease) !important;
+}
+/* ─── SOFT PREMIUM GLOWS ON HOVER ─── */
+/* Glowing Cards */
+.service-card:hover {
+  box-shadow: 0 12px 40px rgba(202, 0, 19, 0.15) !important; /* Wide, soft red glow */
+  border-color: rgba(255, 255, 255, 0.2) !important; /* Brighten the border edge */
+  transform: translateY(-4px) scale(1.01) !important; /* Subtle float up */
+}
+
+/* Glowing Primary Button */
+.btn-primary:hover {
+  box-shadow: 0 8px 32px rgba(202, 0, 19, 0.4) !important; /* Stronger glow for the button */
+  transform: translateY(-2px) !important;
+}
+
+/* Glowing Play Buttons on Portfolio */
+.play-btn {
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.portfolio-item:hover .play-btn {
+  box-shadow: 0 0 20px rgba(202, 0, 19, 0.6) !important;
+}
+/* ─── ELEGANT MOTION GRAPHICS LOADER ─── */
+/* ─── FLY TO NAVBAR ANIMATION ─── */
+.elegant-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 300px;
+  
+  /* Starts flying to the corner right after the 2.5s logo sequence */
+  animation: flyToCorner 0.9s cubic-bezier(0.32, 0.72, 0, 1) 2.4s forwards;
+}
+
+@keyframes yourAnimationName {
+  100% {
+    top: 42px; 
+    left: 60px; 
+    transform: translate(0, -50%) scale(0.22); 
+    opacity: 0; 
+  }
+}
+
+/* We also need to fade out the black background without hiding the logo */
+#loader {
+  animation: clearBackground 0.8s ease 2.4s forwards;
+  pointer-events: none; /* Lets you click the site as it fades */
+}
+@keyframes clearBackground {
+  to { background-color: transparent; }
+}
+
+/* The thin ring that pulses outward (matches your video) */
+.expanding-ring {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0px;
+  height: 0px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  opacity: 0;
+  /* Fires right as the logo reaches full size */
+  animation: ringPulse 1.2s cubic-bezier(0.21, 0.83, 0.26, 1) 0.8s forwards;
+}
+
+/* The logo animation */
+.elegant-logo {
+  position: relative;
+  z-index: 2;
+  width: 160px; /* Adjust if your logo feels too big/small */
+  height: auto;
+  opacity: 0;
+  animation: logoSequence 2.5s ease-out forwards;
+}
+
+/* This sequence mimics the video:
+  Starts small and silver -> Scales up -> Drops shadow -> Turns Red & White 
+*/
+@keyframes logoSequence {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+    /* Starts fully grayscale and super bright (silver effect) */
+    filter: grayscale(100%) brightness(3) drop-shadow(0 0 0 rgba(0,0,0,0));
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.05);
+    filter: grayscale(100%) brightness(1.5) drop-shadow(0 0px 20px rgba(255,255,255,0.2));
+  }
+  50% {
+    transform: scale(1);
+    /* Settles into normal brightness */
+    filter: grayscale(100%) brightness(1) drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+  }
+  80%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    /* Color fades in, shadow gets a subtle red premium glow */
+    filter: grayscale(0%) brightness(1) drop-shadow(0 10px 25px rgba(202, 0, 19, 0.4));
+  }
+}
+
+@keyframes ringPulse {
+  0% {
+    width: 90px;
+    height: 90px;
+    opacity: 1;
+    border-width: 2px;
+  }
+  100% {
+    width: 350px;
+    height: 350px;
+    opacity: 0;
+    border-width: 0px;
+  }
+}
+/* ─── ENHANCED SERVICE CARD VISIBILITY & GLOW ─── */
+.service-card {
+  /* 1. The Corner Glows */
+  box-shadow: 
+    inset 0 0 40px rgba(255, 255, 255, 0.04), /* Soft white inner glow pulling from corners */
+    0 8px 32px rgba(0, 0, 0, 0.5),            /* Deep shadow underneath for 3D depth */
+    0 0 20px rgba(202, 0, 19, 0.08) !important; /* Faint permanent red ambient glow */
+
+  /* 2. Catch the "Light" on the edges */
+  border-top: 1px solid rgba(255, 255, 255, 0.15) !important; /* Brighter top edge */
+  border-left: 1px solid rgba(255, 255, 255, 0.12) !important; /* Brighter left edge */
+  border-right: 1px solid rgba(255, 255, 255, 0.04) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+}
+
+/* ─── NEWSPAPER TEXTURE & ROUNDED BORDERS ─── */
+.portfolio-item {
+  border-radius: 12px !important; /* Smooth rounded corners */
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+/* Gritty paper grain overlay */
+.portfolio-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  /* Uses SVG noise to simulate paper texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* High-contrast newsprint effect (turns to color on hover) */
+.portfolio-thumb img {
+  filter: grayscale(100%) contrast(1.15) sepia(15%) !important;
+}
+
+.portfolio-item:hover .portfolio-thumb img {
+  filter: grayscale(0%) contrast(1.05) sepia(0%) !important;
+}
+
+/* ─── 3D REALISTIC PAPER CLIP ON SERVICE CARDS ─── */
+.service-card {
+  overflow: visible !important; /* Allows the clip to stick out past the edge */
+}
+
+/* Fixes the red hover glow so it doesn't leak out of the rounded corners */
+.service-card::before {
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+/* The 3D Silver Paper Clip (Angled Cross-way) */
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: -25px;
+  left: -20px;
+  width: 40px;
+  height: 90px;
+  /* Hyper-realistic metallic paperclip drawn with code */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 140'%3E%3Cdefs%3E%3ClinearGradient id='metal' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f8f8f8'/%3E%3Cstop offset='25%25' stop-color='%238a8a8a'/%3E%3Cstop offset='50%25' stop-color='%23e8e8e8'/%3E%3Cstop offset='75%25' stop-color='%237a7a7a'/%3E%3Cstop offset='100%25' stop-color='%23d4d4d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M 30 40 V 100 A 8 8 0 0 1 14 100 V 25 A 14 14 0 0 1 42 25 V 110 A 20 20 0 0 1 2 110 V 40' fill='none' stroke='url(%23metal)' stroke-width='5.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  transform: rotate(-35deg); /* Angles it perfectly onto the corner */
+  
+  /* Double shadow: one deep black shadow for depth, one white highlight for realism */
+  filter: drop-shadow(6px 12px 6px rgba(0,0,0,0.8)) drop-shadow(1px 1px 1px rgba(255,255,255,0.4));
+  z-index: 10;
+  pointer-events: none;
+}
+/* ─── WARM DETECTIVE LAMP EFFECT ─── */
+.detective-lamp {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* Sits right above the detective board but behind text */
+  pointer-events: none;
+  
+  /* Creates a massive, warm amber spotlight shining from the top center */
+  background: radial-gradient(
+    140% 120% at 50% -10%, 
+    rgba(255, 175, 60, 0.22) 0%,  /* Bright, warm tungsten center */
+    rgba(202, 60, 0, 0.08) 45%,   /* Fades into a deep, burnt orange */
+    transparent 80%               /* Melts into your existing black shadows */
+  );
+  
+  /* This is the magic: it makes the light realistically "burn" into the white papers */
+  mix-blend-mode: color-dodge; 
+  
+  /* Adds a subtle, gritty voltage fluctuation */
+  animation: bulbFlicker 6s infinite;
+}
+
+/* Simulates an old, slightly unstable room bulb */
+@keyframes bulbFlicker {
+  0%, 100% { opacity: 1; }
+  35% { opacity: 0.95; }
+  36% { opacity: 0.85; }  /* Micro-flicker */
+  37% { opacity: 1; }
+  75% { opacity: 0.92; }
+}
+
+/* ─── WORKSPACE DESK BACKGROUND & LAMP GLOW ─── */
+.workspace-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0; /* Keeps it behind the service cards */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* The Line-Art Silhouette */
+.workspace-art {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1000px; /* Keeps the desk from getting too stretched on huge screens */
+  height: auto;
+}
+
+/* The Simple, Warm Lamp Glow */
+.workspace-light {
+  position: absolute;
+  inset: 0;
+  /* Positions the glow right under where the lamp head is drawn in the SVG */
+  background: radial-gradient(
+    circle at 38% 60%, 
+    rgba(255, 190, 80, 0.08) 0%,   /* Very soft, warm yellow/amber center */
+    rgba(255, 140, 40, 0.03) 40%,  /* Fades gently outward */
+    transparent 70%
+  );
+  mix-blend-mode: color-dodge; /* Makes the light interact beautifully with the dark cards */
+}
+
+/* Ensure the text and cards sit above the background art */
+#services .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* Mobile Adjustment for the Desk */
+@media (max-width: 660px) {
+  .workspace-art {
+    width: 150%; /* Scales it up slightly on phones so it's visible */
+    bottom: -10%;
+  }
+}
+
+/* ─── BURNT NEWSPAPER CLIPPINGS ─── */
+
+/* 1. Base Paper & Charred Edges */
+.service-card.news-clipping {
+  background-color: #dcd0bc !important; /* Old, yellowed paper color */
+  border: none !important;
+  border-radius: 2px 15px 3px 20px / 15px 2px 20px 3px !important; /* Uneven, torn paper edges */
+  box-shadow: 
+    inset 0 0 40px rgba(60, 20, 0, 0.8), /* Heavy brown/black burnt inner edge */
+    inset 0 0 10px rgba(0, 0, 0, 0.9),   /* Sharp charring right on the cut line */
+    5px 15px 20px rgba(0, 0, 0, 0.7) !important; /* Drop shadow hitting the desk */
+  padding: 40px 35px;
+  color: #111 !important; /* Dark ink instead of white text */
+}
+
+/* 2. The Grainy Paper Texture */
+.service-card.news-clipping::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.15'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+  border-radius: inherit;
+}
+
+/* Ensure text sits above the grain */
+.service-card.news-clipping > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* 3. The Yellow Highlighter Effect */
+.highlighter {
+  display: inline;
+  background: linear-gradient(104deg, rgba(255, 235, 59, 0) 0%, rgba(255, 235, 59, 0.8) 4%, rgba(255, 235, 59, 0.9) 96%, rgba(255, 235, 59, 0) 100%);
+  padding: 2px 8px;
+  color: #000;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ─── ANCIENT SCROLL SERVICES ─── */
+
+/* Add space between the scrolls */
+.services-grid {
+  gap: 60px !important; 
+}
+
+/* Base Scroll Styling using your image */
+.service-card.news-clipping {
+  background: url('scroll.png') center center no-repeat !important;
+  background-size: 100% 100% !important; /* Stretches the scroll to fit the text */
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.8) !important; /* Deep shadow for 3D depth */
+  
+  /* Thick padding keeps the text off the rolled edges of the scroll */
+  padding: 80px 90px !important; 
+  color: #2b1a10 !important; /* Dark brown ink color */
+}
+
+/* Remove the old paper grain since the image already has texture */
+.service-card.news-clipping::before {
+  display: none !important; 
+}
+
+/* 3. The Yellow Highlighter Effect */
+/* ─── ANIMATED YELLOW HIGHLIGHTER ─── */
+/* ─── ANIMATED YELLOW HIGHLIGHTER (SLOW & SMOOTH) ─── */
+.highlighter {
+  display: inline;
+  background-image: linear-gradient(104deg, rgba(255, 235, 59, 0) 0%, rgba(255, 235, 59, 0.8) 4%, rgba(255, 235, 59, 0.9) 96%, rgba(255, 235, 59, 0) 100%);
+  background-size: 0% 100%; 
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding: 2px 8px;
+  color: #2b1a10;
+  
+  /* Increased to 1.8 seconds, using a smooth ease-in-out curve */
+  transition: background-size 1.8s cubic-bezier(0.4, 0.0, 0.2, 1) 0.4s;
+}
+
+.service-card.visible .highlighter {
+  background-size: 100% 100%; 
+}
+
+.service-card.visible .highlighter {
+  background-size: 100% 100%; /* Sweeps to full size */
+}
+/* Typography (Old Print Style) */
+.service-card.news-clipping .service-title {
+  font-family: 'Times New Roman', Times, serif !important;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.service-card.news-clipping .service-desc {
+  font-family: 'Courier New', Courier, monospace !important;
+  color: #2b1a10 !important;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-weight: bold;
+}
+
+/* Stamped Evidence Tags */
+.service-card.news-clipping .service-tags span {
+  border-color: rgba(43, 26, 16, 0.4);
+  color: #2b1a10;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.service-card.news-clipping:hover .service-tags span {
+  background: #2b1a10;
+  color: #dcd0bc;
+}
+
+/* Hover effect */
+.service-card.news-clipping:hover {
+  transform: scale(1.03) !important; 
+}
+
+/* Mobile Adjustments for Scroll Padding */
+@media (max-width: 660px) {
+  .service-card.news-clipping {
+    padding: 60px 40px !important; /* Less padding on small screens */
+  }
+}
+/* ─── FOOTER ANIMATED SELECTION (MINI VERSION) ─── */
+.footer-brand .selection-wrapper {
+  padding: 0px 4px; 
+  margin: 0 2px;
+}
+
+.footer-brand .selection-bg {
+  border-width: 1px; /* Thinner dashed line */
+}
+
+/* Shrinks the black tracking squares in the corners */
+.footer-brand .selection-bg::before {
+  inset: -2px;
+  background-size: 3px 3px; 
+}
+
+/* Shrinks the animated cursor to fit the small text */
+.footer-brand .selection-cursor {
+  width: 16px; 
+  height: 16px;
+  margin-top: -2px;
+  margin-left: -4px;
+}
+
+.footer-brand .selection-text {
+  transform: translateY(-1px); 
+}
+
+/* ─── 1. REALISTIC PUSH PIN (REPLACES PAPERCLIP) ─── */
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 25px;    /* Pins it near the top center */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 34px;
+  /* Custom coded 3D Red Push Pin SVG */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 36'%3E%3Cpath d='M12 16L12 34' stroke='%23222' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M6 10 C6 3, 18 3, 18 10 C18 14, 14 15, 12 16 C10 15, 6 14, 6 10 Z' fill='%23CA0013'/%3E%3Cellipse cx='12' cy='5' rx='4' ry='2' fill='%23ff6666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  
+  /* PERFECT SHADOWS: 
+     First shadow handles the soft red plastic top.
+     Second shadow handles the sharp metallic needle pointing down. */
+  filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.8)) drop-shadow(6px 12px 4px rgba(0,0,0,0.5));
+  z-index: 10;
+}
+
+/* ─── 2. HANGING SWAYING BULB ─── */
+.hanging-bulb-wrap {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center; /* Makes it swing from the ceiling, not the middle */
+  animation: swingBulb 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.bulb-wire {
+  width: 2px;
+  height: 180px; /* Length of the wire hanging down */
+  background: #000;
+  box-shadow: 1px 0 3px rgba(0,0,0,0.9);
+}
+
+.bulb-glass {
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle at 40% 40%, #fffbd6, #ffaa00);
+  border-radius: 50%;
+  /* Creates the massive yellow/amber glow */
+  box-shadow: 
+    0 0 50px 20px rgba(255, 180, 0, 0.6), 
+    0 0 120px 60px rgba(255, 140, 0, 0.2);
+  /* Uses your existing flicker animation */
+  animation: bulbFlicker 6s infinite;
+}
+
+@keyframes swingBulb {
+  0%, 100% { transform: translateX(-50%) rotate(-4deg); }
+  50% { transform: translateX(-50%) rotate(4deg); }
+}
+
+/* ─── 3. ENLARGE NAV LOGO ─── */
+.nav-logo-img {
+  height: 55px !important; /* Increased from 36px to make it bolder */
+}
+
+/* Update the loader so the silver logo matches the new larger size when it flies */
+@keyframes flyToCorner {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  95% { opacity: 1; }
+  100% {
+    top: 42px; 
+    left: clamp(24px, 5%, 72px); 
+    transform: translate(0, -50%) scale(0.34); /* Increased scale to perfectly match 55px */
+    opacity: 0; 
+  }
+}
+
+/* Safety override if your file is still using the older animation name */
+@keyframes yourAnimationName {
+  100% {
+    top: 42px; 
+    left: clamp(24px, 5%, 72px); 
+    transform: translate(0, -50%) scale(0.34); 
+    opacity: 0; 
+  }
+}
+
+/* ─── ENLARGE NAV LOGO ─── */
+.nav-logo-img { height: 55px !important; }
+
+@keyframes flyToCorner {
+  0% { top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  95% { opacity: 1; }
+  100% { top: 42px; left: clamp(24px, 5%, 72px); transform: translate(0, -50%) scale(0.34); opacity: 0; }
+}
+@keyframes yourAnimationName {
+  100% { top: 42px; left: clamp(24px, 5%, 72px); transform: translate(0, -50%) scale(0.34); opacity: 0; }
+}
+
+/* ─── HANGING SWAYING BULB (MASSIVE WIRE) ─── */
+.hanging-bulb-wrap {
+  position: absolute;
+  top: -100vh; 
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center; 
+  animation: swingBulb 10s ease-in-out infinite; 
+  pointer-events: none;
+}
+.bulb-wire {
+  width: 2px;
+  height: calc(100vh + 180px); 
+  background: #050505;
+  box-shadow: 1px 0 3px rgba(0,0,0,0.9);
+}
+.bulb-glass {
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle at 40% 40%, #fffbd6, #ffaa00);
+  border-radius: 50%;
+  box-shadow: 0 0 50px 20px rgba(255, 180, 0, 0.6), 0 0 120px 60px rgba(255, 140, 0, 0.2);
+  animation: bulbFlicker 6s infinite;
+}
+@keyframes swingBulb {
+  0%, 100% { transform: translateX(-50%) rotate(-4deg); }
+  50% { transform: translateX(-50%) rotate(4deg); }
+}
+
+/* ─── REALISTIC 3D PUSH PIN ─── */
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: 25px; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 36'%3E%3Cpath d='M12 16L12 34' stroke='%23222' stroke-width='2' stroke-linecap='round'/%3E%3Cpath d='M6 10 C6 3, 18 3, 18 10 C18 14, 14 15, 12 16 C10 15, 6 14, 6 10 Z' fill='%23CA0013'/%3E%3Cellipse cx='12' cy='5' rx='4' ry='2' fill='%23ff6666'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: contain;
+  filter: drop-shadow(2px 4px 3px rgba(0,0,0,0.8)) drop-shadow(6px 12px 4px rgba(0,0,0,0.5));
+  z-index: 10;
+}
+
+/* ─── FOOTER ANIMATED SELECTION ─── */
+.footer-brand .selection-wrapper { padding: 0px 4px; margin: 0 2px; }
+.footer-brand .selection-bg { border-width: 1px; }
+.footer-brand .selection-bg::before { inset: -2px; background-size: 3px 3px; }
+.footer-brand .selection-cursor { width: 16px; height: 16px; margin-top: -2px; margin-left: -4px; }
+.footer-brand .selection-text { transform: translateY(-1px); }
